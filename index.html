@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function checkAccountNumber() {
+            $("#errorMessage").css("display", "none");
+            let accountNumber = $("#accNum").val();
+            console.log(accountNumber);
+            if(accountNumber.length == 6){
+                $.ajax({
+                        url: '/check',
+                        data: JSON.stringify({accNum : accountNumber}),
+                       // dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if(data == "ok"){
+                                alert(data);
+                            }
+                            else{
+                                $("#errorMessage").css("display", "block");
+                            }
+                        },
+                        error: function (response) {
+                            alert(response);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+            }
+            else{
+                console.log("Not enough character");
+            }
+        }
+    </script>
+</head>
+<body>
+    <form>
+        <input type="text" placeholder="enter your account number" name="accNum" id="accNum" maxlength="6" onkeyup="checkAccountNumber()">
+        <button> Submit </button>
+        <br>
+        <p style="display : none; color: red" id="errorMessage">Invalid Account Number</p>
+    </form>
+</body>
+</html>
